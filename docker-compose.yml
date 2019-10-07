@@ -6,6 +6,8 @@ services:
     env_file: .env
     build:
       context: ./bot
+    cap_add:
+      - SYS_TIME
     restart: always
     volumes:
       - ./bot:/app
