@@ -110,6 +110,7 @@ def day(update: telegram.Update, context: CallbackContext):
 
 
 if __name__ == "__main__":
+    print("Bot started")
     u = Updater(TOKEN, use_context=True)
     j = u.job_queue
 

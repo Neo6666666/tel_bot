@@ -2,11 +2,6 @@
 
 include .env
 
-SHELL = /bin/sh
-CURRENT_UID := $(shell id -u):$(shell id -g)
-
-export CURRENT_UID
-
 reqs:
 	pipenv lock -r > ./bot/requirements.txt
 up:
