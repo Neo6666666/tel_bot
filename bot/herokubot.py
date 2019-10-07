@@ -6,10 +6,9 @@ import signal
 import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
-
-TOKEN = "780204015:AAGkIDmwlnjngHyeXmSArTe_dqvsBUu6IQk"
-NAME = "lfnotifybot"
-PORT = os.environ.get('PORT')
+TOKEN = os.environ.get('BOT_TOKEN')
+NAME = os.environ.get('BOT_NAME')
+PORT = os.environ.get('BOT_PORT')
 """
 CHAT_ID = ''
 
@@ -110,7 +109,7 @@ def day(update: telegram.Update, context: CallbackContext):
 
 
 if __name__ == "__main__":
-    print("Bot started")
+    print(f"Bot {NAME}({TOKEN[:3]}..{TOKEN[-3:]}) started on {PORT} port")
     u = Updater(TOKEN, use_context=True)
     j = u.job_queue
 
