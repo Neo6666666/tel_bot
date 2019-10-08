@@ -12,8 +12,8 @@ services:
     volumes:
       - ./bot:/app
     networks:
-      private_network:
-        ipv4_address: 172.25.0.5
+      tel_bot_network:
+        ipv4_address: 172.23.0.5
 
   nginx:
     container_name: tel_nginx
@@ -26,14 +26,14 @@ services:
     depends_on:
       - backend
     networks:
-      private_network:
-        ipv4_address: 172.25.0.7
+      tel_bot_network:
+        ipv4_address: 172.23.0.7
       default:
 
 
 networks:
-  private_network:
+  tel_bot_network:
     ipam:
       driver: default
       config:
-        - subnet: 172.25.0.0/24
+        - subnet: 172.23.0.0/24
