@@ -93,7 +93,7 @@ def callback_alarm(context: CallbackContext):
 def start(update: telegram.Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.chat_id,
                              text='Привет! Я буду каждый день присылать тебе напоминания о днях рождения. Главное вовремя обновлять список.')
-
+    print('Message on -', update.message.chat_id)
     context.job_queue.run_daily(callback_alarm, datetime.time(hour=23, minute=30), context=update.message.chat_id)
     # context.job_queue.run_repeating(callback_alarm, interval=30, context=update.message.chat_id)
     # gel_live(context)
