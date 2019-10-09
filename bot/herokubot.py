@@ -5,12 +5,11 @@ import signal
 import logging
 
 import telegram
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, 
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters,
                           CallbackContext)
 
-from . import birth_day as birth_d
-from . import user_manager as u_man
-
+from birth_day import BirthDay as birth_d
+from user_manager import UserManager as u_man
 
 TOKEN = os.environ.get('BOT_TOKEN')
 NAME = os.environ.get('BOT_NAME')
