@@ -8,8 +8,8 @@ import telegram
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, 
                           CallbackContext)
 
-import .birth_day as birth_d
-import .user_manager as u_man
+from . import birth_day as birth_d
+from . import user_manager as u_man
 
 
 TOKEN = os.environ.get('BOT_TOKEN')
