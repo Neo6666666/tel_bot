@@ -8,40 +8,19 @@ import telegram
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, 
                           CallbackContext)
 
+import bot.birth_day as birth_d
+import bot.user_manager as u_man
+
 
 TOKEN = os.environ.get('BOT_TOKEN')
 NAME = os.environ.get('BOT_NAME')
 PORT = os.environ.get('BOT_PORT')
 
 
-def get_birth_days():
-    curr_date = datetime.datetime.now()
-    persons = {}
-    with open('dates.csv', 'r') as f:
-        for s in f:
-            arr = s.split(',')
-            birth_date = arr[-1].split(';')[0].split('.')
-            if int(birth_date[0]) == int(curr_date.day) \
-                and int(birth_date[1]) == int(curr_date.month):
-                if len(birth_date) == 3:
-                    persons[' '.join(arr[0:3])] = \
-                        f'{int(curr_date.year) - int(birth_date[-1])} летие.'
-                else:
-                    persons[' '.join(arr[0:3])] = '.'.join(birth_date)
-
-    message = 'Сегодня никаких дней рождений.'
-    if len(persons) != 0:
-        message = f'На {curr_date.day}.{curr_date.month}.{curr_date.year} дни + \
-            рождения празднуют:\n' + \
-            f'\n'.join([f'{key}: {value}' for key, value in persons.items()])
-
-    return message
-
-
 def callback_alarm(context: CallbackContext):
     logging.getLogger().info(context.job.context, 'call /day or alarm.')
     context.bot.send_message(
-        chat_id=context.job.context, text=get_birth_days())
+        chat_id=context.job.context, text=birth_d.get_birth_days())
 
 
 def start(update: telegram.Update, context: CallbackContext):
@@ -50,15 +29,16 @@ def start(update: telegram.Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.chat_id, text=msg)
 
     logging.getLogger().info('Message /start on -', update.message.chat_id)
-
-    context.job_queue.run_daily(callback_alarm, 
-                                datetime.time(hour=23, minute=30), 
-                                context=update.message.chat_id)
+    if not u_man.is_user_in_list(update.message.chat_id):
+        u_man.add_user_in_list(update.message.chat_id)
+        context.job_queue.run_daily(callback_alarm, 
+                                    datetime.time(hour=23, minute=30), 
+                                    context=update.message.chat_id)
 
 
 def day(update: telegram.Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.chat_id, 
-                             text=get_birth_days())
+                             text=birth_d.get_birth_days())
 
 
 if __name__ == "__main__":
