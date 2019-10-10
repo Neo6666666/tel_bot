@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s -' +
                         '%(message)s', level=logging.INFO)
-    logging.basicConfig(filename='debug.log',
+    logging.basicConfig(filename='../logs/debug.log',
                         filemode='a',
                         format='%(asctime)s - %(name)s - %(levelname)s -' +
                         '%(message)s',

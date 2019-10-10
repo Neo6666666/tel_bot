@@ -7,7 +7,7 @@ class UserManager:
         with open('users.list', 'r') as f:
             user_list = f.readlines()
             logging.getLogger().debug(f'Requested user list: {user_list}')
-            return user_list
+            return [i.rstrip('\n') for i in user_list]
 
     @staticmethod
     def is_user_in_list(user_id):
