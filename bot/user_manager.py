@@ -11,7 +11,8 @@ class UserManager:
 
     @staticmethod
     def is_user_in_list(user_id):
-        logging.getLogger().debug(f'Is user {user_id} in {UserManager.get_users_list()}')
+        logging.getLogger().debug(
+            f'Is user {user_id} in {UserManager.get_users_list()}')
         usr = str(user_id)
         return usr in UserManager.get_users_list()
 
@@ -35,4 +36,5 @@ class UserManager:
         logging.getLogger().debug(f'Remove user {user_id} from {users}')
         users.remove(str(user_id))
         UserManager.write_users_list(users)
-        logging.getLogger().debug(f'Result of removing is {UserManager.get_users_list()}')
+        logging.getLogger().debug(
+            f'Result of removing is {UserManager.get_users_list()}')

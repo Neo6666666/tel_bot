@@ -22,6 +22,7 @@ class BirthDay:
         if len(persons) != 0:
             message = f'На {curr_date.day}.{curr_date.month}.{curr_date.year} дни + \
                 рождения празднуют:\n' + \
-                      f'\n'.join([f'{key}: {value}' for key, value in persons.items()])
+                      f'\n'.join([f'{key}: {value}' for key,
+                                  value in persons.items()])
 
         return message
