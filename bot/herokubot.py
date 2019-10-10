@@ -1,12 +1,11 @@
+import datetime
 import logging
 import os
-import datetime
 import signal
-import logging
 
 import telegram
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters,
-                          CallbackContext)
+from telegram.ext import (CallbackContext, CommandHandler, Filters,
+                          MessageHandler, Updater)
 
 from birth_day import BirthDay as birth_d
 from user_manager import UserManager as u_man
@@ -23,27 +22,28 @@ def callback_alarm(context: CallbackContext):
 
 
 def start(update: telegram.Update, context: CallbackContext):
-    msg = 'Привет! Я буду каждый день присылать тебе напоминания о днях \
-        рождения. Главное вовремя обновлять список.'
+    msg = """Привет! 
+    Я буду каждый день присылать тебе напоминания о днях рождения. 
+    Главное вовремя обновлять список."""
     context.bot.send_message(chat_id=update.message.chat_id, text=msg)
 
     logging.getLogger().info(f'Message /start on - {update.message.chat_id}')
     if not u_man.is_user_in_list(update.message.chat_id):
         u_man.add_user_in_list(update.message.chat_id)
-        context.job_queue.run_daily(callback_alarm, 
-                                    datetime.time(hour=23, minute=59), 
+        context.job_queue.run_daily(callback_alarm,
+                                    datetime.time(hour=23, minute=59),
                                     context=update.message.chat_id)
 
 
 def day(update: telegram.Update, context: CallbackContext):
-    context.bot.send_message(chat_id=update.message.chat_id, 
+    context.bot.send_message(chat_id=update.message.chat_id,
                              text=birth_d.get_birth_days())
 
 
 if __name__ == "__main__":
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - \
-        %(message)s', level=logging.INFO)
+        %(message)s', level=logging.DEBUG)
 
     logging.getLogger().info(f"Bot {NAME}({TOKEN[:3]}..{TOKEN[-3:]}) \
         started on {PORT} port")
