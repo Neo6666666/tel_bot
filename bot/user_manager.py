@@ -1,7 +1,7 @@
 class UserManager:
     @staticmethod
     def get_users_list():
-        with open('users.list', 'r') as f:
+        with open('users.list', 'w+') as f:
             return [i.rstrip('\r\n') for i in f.readlines()]
 
     @staticmethod
