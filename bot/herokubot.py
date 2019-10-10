@@ -43,7 +43,13 @@ def day(update: telegram.Update, context: CallbackContext):
 if __name__ == "__main__":
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s -' +
-                        '%(message)s', level=logging.DEBUG)
+                        '%(message)s', level=logging.INFO)
+    logging.basicConfig(filename='debug.log',
+                        filemode='a',
+                        format='%(asctime)s - %(name)s - %(levelname)s -' +
+                        '%(message)s',
+                        datefmt='%H:%M:%S',
+                        level=logging.DEBUG)
 
     logging.getLogger().info(f"Bot {NAME}({TOKEN[:3]}..{TOKEN[-3:]}) \
         started on {PORT} port")
