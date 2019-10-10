@@ -25,14 +25,18 @@ def start(update: telegram.Update, context: CallbackContext):
     msg = """Привет! 
 Я буду каждый день присылать тебе напоминания о днях рождения. 
 Главное вовремя обновлять список."""
-    context.bot.send_message(chat_id=update.message.chat_id, text=msg)
-
-    logging.getLogger().info(f'Message /start on - {update.message.chat_id}')
     if not u_man.is_user_in_list(update.message.chat_id):
+        
+        logging.getLogger().info(f'Message /start on - {update.message.chat_id}')
         u_man.add_user_in_list(update.message.chat_id)
+        
+        context.bot.send_message(chat_id=update.message.chat_id, text=msg)
         context.job_queue.run_daily(callback_alarm,
                                     datetime.time(hour=23, minute=59),
                                     context=update.message.chat_id)
+    else:
+        context.bot.send_message(chat_id=update.message.chat_id, 
+                                 text='Вы уже подписаны.')
 
 
 def day(update: telegram.Update, context: CallbackContext):
