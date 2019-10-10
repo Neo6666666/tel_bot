@@ -23,8 +23,8 @@ def callback_alarm(context: CallbackContext):
 
 def start(update: telegram.Update, context: CallbackContext):
     msg = """Привет! 
-    Я буду каждый день присылать тебе напоминания о днях рождения. 
-    Главное вовремя обновлять список."""
+Я буду каждый день присылать тебе напоминания о днях рождения. 
+Главное вовремя обновлять список."""
     context.bot.send_message(chat_id=update.message.chat_id, text=msg)
 
     logging.getLogger().info(f'Message /start on - {update.message.chat_id}')
@@ -42,8 +42,8 @@ def day(update: telegram.Update, context: CallbackContext):
 
 if __name__ == "__main__":
 
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - \
-        %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s -' +
+                        '%(message)s', level=logging.DEBUG)
 
     logging.getLogger().info(f"Bot {NAME}({TOKEN[:3]}..{TOKEN[-3:]}) \
         started on {PORT} port")

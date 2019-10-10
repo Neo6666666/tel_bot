@@ -4,10 +4,11 @@ import logging
 class UserManager:
     @staticmethod
     def get_users_list():
-        with open('users.list', 'w+') as f:
+        with open('users.list', 'r') as f:
             user_list = f.readlines()
             logging.getLogger().debug(f'Requested user list: {user_list}')
-            return [i.rstrip('\n') for i in user_list]
+            
+            return user_list
 
     @staticmethod
     def is_user_in_list(user_id):
@@ -26,6 +27,7 @@ class UserManager:
         mode = 'w' if mode_destructive else 'a'
         with open('users.list', mode=mode) as f:
             f.writelines(users_list)
+            f.flush()
 
     @staticmethod
     def remove_user_from_list(user_id):
