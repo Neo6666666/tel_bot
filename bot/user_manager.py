@@ -19,7 +19,7 @@ class UserManager:
     def add_user_in_list(user_id):
         with open('users.list', 'a') as f:
             logging.getLogger().debug(f'Add new user {user_id}')
-            f.write(str(user_id))
+            f.write(f'{user_id}\n')
             f.flush()
 
     @staticmethod
