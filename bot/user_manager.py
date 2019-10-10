@@ -2,11 +2,11 @@ class UserManager:
     @staticmethod
     def get_users_list():
         with open('users.list', 'w+') as f:
-            return [i.rstrip('\r\n') for i in f.readlines()]
+            return [i.rstrip('\n') for i in f.readlines()]
 
     @staticmethod
     def is_user_in_list(user_id):
-        return user_id in UserManager.get_users_list()
+        return str(user_id) in UserManager.get_users_list()
 
     @staticmethod
     def add_user_in_list(user_id):
@@ -22,5 +22,5 @@ class UserManager:
     @staticmethod
     def remove_user_from_list(user_id):
         users = UserManager.get_users_list()
-        users.remove(user_id)
+        users.remove(str(user_id))
         UserManager.write_users_list(users)

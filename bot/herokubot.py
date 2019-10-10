@@ -17,7 +17,7 @@ PORT = os.environ.get('BOT_PORT')
 
 
 def callback_alarm(context: CallbackContext):
-    logging.getLogger().info(context.job.context, 'call /day or alarm.')
+    logging.getLogger().info(f'{context.job.context} call /day or alarm.')
     context.bot.send_message(
         chat_id=context.job.context, text=birth_d.get_birth_days())
 
