@@ -11,7 +11,7 @@ class UserManager:
     @staticmethod
     def add_user_in_list(user_id):
         with open('users.list', 'a') as f:
-            f.write(user_id)
+            f.write(str(user_id))
 
     @staticmethod
     def write_users_list(users_list, mode_destructive=False):

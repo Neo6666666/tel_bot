@@ -27,11 +27,11 @@ def start(update: telegram.Update, context: CallbackContext):
         рождения. Главное вовремя обновлять список.'
     context.bot.send_message(chat_id=update.message.chat_id, text=msg)
 
-    logging.getLogger().info('Message /start on -', update.message.chat_id)
+    logging.getLogger().info(f'Message /start on - {update.message.chat_id}')
     if not u_man.is_user_in_list(update.message.chat_id):
         u_man.add_user_in_list(update.message.chat_id)
         context.job_queue.run_daily(callback_alarm, 
-                                    datetime.time(hour=23, minute=30), 
+                                    datetime.time(hour=23, minute=59), 
                                     context=update.message.chat_id)
 
 
