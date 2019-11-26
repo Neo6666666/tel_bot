@@ -13,6 +13,10 @@ from user_manager import UserManager as u_man
 TOKEN = os.environ.get('BOT_TOKEN')
 NAME = os.environ.get('BOT_NAME')
 PORT = os.environ.get('BOT_PORT')
+REQUEST_KWARGS = {
+    # "USERNAME:PASSWORD@" is optional, if you need authentication:
+    'proxy_url': 'HTTPS://185.198.184.14:48122/',
+}
 
 
 def callback_alarm(context: CallbackContext):
@@ -23,7 +27,7 @@ def callback_alarm(context: CallbackContext):
 
 def start(update: telegram.Update, context: CallbackContext):
     msg = """Привет! 
-Я буду каждый день присылать тебе напоминания о днях рождения. 
+Я буду каждый день присылать тебе напоминания о важных собитиях. 
 Главное вовремя обновлять список."""
     if not u_man.is_user_in_list(update.message.chat_id):
 
@@ -59,7 +63,7 @@ if __name__ == "__main__":
     logging.getLogger().info(f"Bot {NAME}({TOKEN[:3]}..{TOKEN[-3:]}) \
         started on {PORT} port")
 
-    u = Updater(TOKEN, use_context=True)
+    u = Updater(TOKEN, use_context=True, request_kwargs=REQUEST_KWARGS)
     j = u.job_queue
 
     timer_handler = CommandHandler('start', start)

@@ -10,4 +10,3 @@ RUN apk add --no-cache --virtual .build-deps python3-dev gcc musl-dev openssl-de
  apk --purge del .build-deps && \
  rm -f requirements.txt
 EXPOSE 80
-ENTRYPOINT ["./docker-entrypoint.sh"]
