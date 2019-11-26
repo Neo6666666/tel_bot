@@ -11,6 +11,7 @@ services:
     restart: always
     volumes:
       - ./bot:/app
+    entrypoint: ./docker-entrypoint.sh
     networks:
       tel_bot_network:
         ipv4_address: 172.23.0.5
