@@ -11,6 +11,7 @@ from birth_day import BirthDay as birth_d
 from user_manager import UserManager as u_man
 
 import persistent as pers
+from admin import restricted as is_admin
 
 TOKEN = os.environ.get('BOT_TOKEN')
 NAME = os.environ.get('BOT_NAME')
@@ -51,10 +52,12 @@ def day(update: telegram.Update, context: CallbackContext):
                              text=birth_d.get_birth_days())
 
 
+# @is_admin
 def save_jobs(update: telegram.Update, context: CallbackContext):
     pers.save_jobs_job(context)
 
 
+# @is_admin
 def load_jobs(update: telegram.Update, context: CallbackContext):
     pers.load_jobs_job(update, context)
 
