@@ -65,3 +65,11 @@ def save_jobs(jq):
 
 def save_jobs_job(context):
     save_jobs(context.job_queue)
+
+
+def load_jobs_job(update, context):
+    try:
+        load_jobs(context.job_queue)
+    except FileNotFoundError:
+        context.bot.send_message(chat_id=update.message.chat_id,
+                                 text='Не могу найти фаил очереди работ.')

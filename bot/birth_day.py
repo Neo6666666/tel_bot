@@ -14,4 +14,4 @@ class BirthDay:
                         and int(birth_date[1]) == int(curr_date.month):
                     message.append(arr[1])
 
-        return f'На {curr_date.day}.{curr_date.month}.{curr_date.year}: {','.join(message) if message else 'Сегодня никаких уведомлений.'}'
+        return f'На {curr_date.day}.{curr_date.month}.{curr_date.year}: {",".join(message) if message else "Сегодня никаких уведомлений."}'

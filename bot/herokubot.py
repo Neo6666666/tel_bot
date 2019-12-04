@@ -10,6 +10,8 @@ from telegram.ext import (CallbackContext, CommandHandler, Filters,
 from birth_day import BirthDay as birth_d
 from user_manager import UserManager as u_man
 
+import persistent as pers
+
 TOKEN = os.environ.get('BOT_TOKEN')
 NAME = os.environ.get('BOT_NAME')
 PORT = os.environ.get('BOT_PORT')
@@ -37,7 +39,7 @@ def start(update: telegram.Update, context: CallbackContext):
 
         context.bot.send_message(chat_id=update.message.chat_id, text=msg)
         context.job_queue.run_daily(callback_alarm,
-                                    datetime.time(hour=23, minute=59),
+                                    datetime.time(hour=7, minute=1),
                                     context=update.message.chat_id)
     else:
         context.bot.send_message(chat_id=update.message.chat_id,
@@ -47,6 +49,14 @@ def start(update: telegram.Update, context: CallbackContext):
 def day(update: telegram.Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.message.chat_id,
                              text=birth_d.get_birth_days())
+
+
+def save_jobs(update: telegram.Update, context: CallbackContext):
+    pers.save_jobs_job(context)
+
+
+def load_jobs(update: telegram.Update, context: CallbackContext):
+    pers.load_jobs_job(update, context)
 
 
 if __name__ == "__main__":
@@ -71,6 +81,12 @@ if __name__ == "__main__":
 
     day_handler = CommandHandler('day', day)
     u.dispatcher.add_handler(day_handler)
+    
+    save_jobs_handler = CommandHandler('save_jobs', save_jobs)
+    u.dispatcher.add_handler(save_jobs_handler)
+    
+    load_jobs_handler = CommandHandler('load_jobs', load_jobs)
+    u.dispatcher.add_handler(load_jobs_handler)
 
     u.start_polling()
     u.idle(stop_signals=(signal.SIGABRT,))
