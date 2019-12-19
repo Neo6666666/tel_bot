@@ -16,10 +16,10 @@ from admin import restricted as is_admin
 TOKEN = os.environ.get('BOT_TOKEN')
 NAME = os.environ.get('BOT_NAME')
 PORT = os.environ.get('BOT_PORT')
-REQUEST_KWARGS = {
-    # "USERNAME:PASSWORD@" is optional, if you need authentication:
-    #'proxy_url': 'HTTPS://185.198.184.14:48122/',
-}
+# REQUEST_KWARGS = {
+#     # "USERNAME:PASSWORD@" is optional, if you need authentication:
+#     # 'proxy_url': 'HTTPS://185.198.184.14:48122/',
+# }
 
 
 def callback_alarm(context: CallbackContext):
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     logging.getLogger().info(f"Bot {NAME}({TOKEN[:3]}..{TOKEN[-3:]}) \
         started on {PORT} port")
 
-    u = Updater(TOKEN, use_context=True, request_kwargs=REQUEST_KWARGS)
+    u = Updater(TOKEN, use_context=True)
     j = u.job_queue
 
     timer_handler = CommandHandler('start', start)
@@ -84,10 +84,10 @@ if __name__ == "__main__":
 
     day_handler = CommandHandler('day', day)
     u.dispatcher.add_handler(day_handler)
-    
+
     save_jobs_handler = CommandHandler('save_jobs', save_jobs)
     u.dispatcher.add_handler(save_jobs_handler)
-    
+
     load_jobs_handler = CommandHandler('load_jobs', load_jobs)
     u.dispatcher.add_handler(load_jobs_handler)
 
