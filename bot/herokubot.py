@@ -18,7 +18,7 @@ NAME = os.environ.get('BOT_NAME')
 PORT = os.environ.get('BOT_PORT')
 REQUEST_KWARGS = {
     # "USERNAME:PASSWORD@" is optional, if you need authentication:
-    'proxy_url': 'HTTPS://185.198.184.14:48122/',
+    #'proxy_url': 'HTTPS://185.198.184.14:48122/',
 }
 
 
