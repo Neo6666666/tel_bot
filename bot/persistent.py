@@ -7,60 +7,54 @@ from threading import Event
 
 JOBS_PICKLE = os.environ.get('JOBS_PICKLE', 'job_tuples.pickle')
 
+JOB_DATA = ('callback', 'interval', 'repeat', 'context', 'days', 'name', 'tzinfo')
+JOB_STATE = ('_remove', '_enabled')
+
 
 def load_jobs(jq):
-    now = time()
-
     with open(JOBS_PICKLE, 'rb') as fp:
         while True:
             try:
-                next_t, job = pickle.load(fp)
+                next_t, data, state = pickle.load(fp)
             except EOFError:
-                break  # Loaded all job tuples
+                break  # loaded all jobs
 
-            # Create threading primitives
-            enabled = job._enabled
-            removed = job._remove
+            # New object with the same data
+            job = Job(**{var: val for var, val in zip(JOB_DATA, data)})
 
-            job._enabled = Event()
-            job._remove = Event()
+            # Restore the state it had
+            for var, val in zip(JOB_STATE, state):
+                attribute = getattr(job, var)
+                getattr(attribute, 'set' if val else 'clear')()
 
-            if enabled:
-                job._enabled.set()
+            job.job_queue = jq
 
-            if removed:
-                job._remove.set()
-
-            next_t -= now  # Convert from absolute to relative time
+            next_t -= time()  # convert from absolute to relative time
 
             jq._put(job, next_t)
 
 
 def save_jobs(jq):
-    if jq:
-        job_tuples = jq._queue.queue
-    else:
-        job_tuples = []
+    with jq._queue.mutex:  # in case job_queue makes a change
 
-    with open(JOBS_PICKLE, 'wb') as fp:
-        for next_t, job in job_tuples:
-            # Back up objects
-            _job_queue = job._job_queue
-            _remove = job._remove
-            _enabled = job._enabled
+        if jq:
+            job_tuples = jq._queue.queue
+        else:
+            job_tuples = []
 
-            # Replace un-pickleable threading primitives
-            job._job_queue = None  # Will be reset in jq.put
-            job._remove = job.removed  # Convert to boolean
-            job._enabled = job.enabled  # Convert to boolean
+        with open(JOBS_PICKLE, 'wb') as fp:
+            for next_t, job in job_tuples:
 
-            # Pickle the job
-            pickle.dump((next_t, job), fp)
+                # This job is always created at the start
+                if job.name == 'save_jobs_job':
+                    continue
 
-            # Restore objects
-            job._job_queue = _job_queue
-            job._remove = _remove
-            job._enabled = _enabled
+                # Threading primitives are not pickleable
+                data = tuple(getattr(job, var) for var in JOB_DATA)
+                state = tuple(getattr(job, var).is_set() for var in JOB_STATE)
+
+                # Pickle the job
+                pickle.dump((next_t, data, state), fp)
 
 
 def save_jobs_job(context):
