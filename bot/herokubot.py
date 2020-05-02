@@ -30,7 +30,7 @@ def callback_alarm(context: CallbackContext):
 
 def start(update: telegram.Update, context: CallbackContext):
     msg = """Привет! 
-Я буду каждый день присылать тебе напоминания о важных собитиях. 
+Я буду каждый день присылать тебе напоминания о важных событиях. 
 Главное вовремя обновлять список."""
     if not u_man.is_user_in_list(update.message.chat_id):
 

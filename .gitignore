@@ -111,3 +111,4 @@ venv.bak/
 # Bot project
 users.list
 secret.txt
+bot/dates.csv
